@@ -1,25 +1,34 @@
 import tkinter as tk
 import random
 
-
-# Fonction pour lire les mots depuis un fichier texte
 def read_words_from_file(filename):
     words = []
-    with open(filename, 'r') as file:
+    with open(filename, 'r', encoding='utf-8') as file:
         for line in file:
-            en, fr = line.strip().split(',')
-            words.append({"en": en.strip(), "fr": fr.strip()})
+            if ',' in line and line.strip():  # Vérifier que la ligne contient une virgule et n'est pas vide
+                parts = line.strip().split(',')
+                if len(parts) == 2:
+                    en, fr = parts
+                    words.append({"en": en.strip(), "fr": fr.strip()})
+                else:
+                    print(f"Ligne ignorée (mauvais format) : {line.strip()}")
+            else:
+                print(f"Ligne ignorée (pas de virgule ou vide) : {line.strip()}")
     return words
 
 
 class TranslationApp:
     def __init__(self, root, words):
         self.root = root
-        self.root.title("Apprendre l'anglais")
+        self.root.title("classic learning words")
         self.root.configure(bg='black')
+
+        # Définir la taille de la fenêtre (largeur x hauteur)
+        self.root.geometry("800x600")
 
         self.words = words
         self.score = 0
+        self.current_word = None
 
         self.word_label = tk.Label(root, text="", font=("Helvetica", 24), bg="black", fg="white")
         self.word_label.pack(pady=20)
@@ -43,16 +52,18 @@ class TranslationApp:
         self.word_label.config(text=self.current_word['en'])
         self.entry.delete(0, tk.END)
         self.result_label.config(text="")
+        self.check_button.config(state=tk.NORMAL)  # Réactiver le bouton
 
     def check_translation(self):
         user_translation = self.entry.get().strip().lower()
         correct_translation = self.current_word['fr']
         if user_translation == correct_translation:
-            self.result_label.config(text="Correct!", fg="green")
+            self.result_label.config(text="Bien joué!", fg="green")
             self.score += 1
         else:
-            self.result_label.config(text=f"Incorrect! La bonne réponse est '{correct_translation}'", fg="red")
+            self.result_label.config(text=f"La réponse c'était : '{correct_translation}' gros nullos", fg="red")
         self.score_label.config(text=f"Score: {self.score}")
+        self.check_button.config(state=tk.DISABLED)  # Désactiver le bouton après un clic
         self.root.after(2000, self.next_word)
 
 
