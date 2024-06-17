@@ -1,6 +1,3 @@
-Bien sûr ! Voici une liste de 300 paires de mots anglais et leurs traductions en français pour vous aider à vous entraîner. Vous pouvez copier cette liste dans un fichier texte nommé `words.txt`.
-
-```text
 abandon,abandonner
 ability,capacité
 abolish,abolir
@@ -371,9 +368,7 @@ corporate,entreprise
 correct,corriger
 correlate,correlater
 correspond,correspondre
-corruption,
-
-corruption
+corruption,corruption
 cost,coût
 cotton,coton
 cough,tousser
